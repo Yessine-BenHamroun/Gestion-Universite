@@ -38,6 +38,8 @@ public class EtudiantService implements Iservice {
 
     @Override
     public List<Etudiant> getAllEtudiants() {
-        return etudiantRepo.findAll();
+        List<Etudiant> etudiants = etudiantRepo.findAll();
+        System.out.println("Fetched " + etudiants.size() + " students from DB");
+        return etudiants;
     }
 }

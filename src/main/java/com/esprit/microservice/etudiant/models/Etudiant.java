@@ -1,14 +1,13 @@
 package com.esprit.microservice.etudiant.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
+@Table(name = "ETUDIANT")  // Ensure it matches your H2 table name exactly
+
 public class Etudiant implements Serializable {
     private static final long serialVersionUID =6 ;
 
