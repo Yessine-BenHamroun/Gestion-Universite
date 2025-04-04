@@ -1,0 +1,46 @@
+version: '2.2
+
+services:
+  Eureka:
+    image: noura00/eureka:latest
+    container_name: eurekaC
+    ports:
+      - "8761:8761"
+    networks:
+      - micro-net
+    restart: unless-stopped
+
+  Gateway:
+    image: noura00/gateway:latest
+    container_name: gatewayC
+    ports:
+      - "8093:8093"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/
+    depends_on:
+      - Eureka
+    networks:
+      - micro-net
+    restart: unless-stopped
+
+  Etudiant:
+    image: noura00/etudiant:latest
+    container_name: etudiant-appC
+    ports:
+      - "8092:8092"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/
+    volumes:
+      - etudiant-data:/app/Database/Data
+    depends_on:
+      - Eureka
+    networks:
+      - micro-net
+    restart: unless-stopped
+
+networks:
+  micro-net:
+    driver: bridge
+
+volumes:
+  etudiant-data:
