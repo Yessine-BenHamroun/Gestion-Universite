@@ -1,46 +1,70 @@
-version: '2.2
-
 services:
-  Eureka:
-    image: noura00/eureka:latest
-    container_name: eurekaC
+  eureka:
+    container_name: eureka-server
+    build:
+      context: ./Eureka
+      dockerfile: Dockerfile
     ports:
       - "8761:8761"
-    networks:
-      - micro-net
-    restart: unless-stopped
+    hostname: eureka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
-  Gateway:
-    image: noura00/gateway:latest
-    container_name: gatewayC
+  h2database:
+    container_name: h2-database
+    image: oscarfonts/h2:latest
     ports:
-      - "8093:8093"
+      - "8082:81"  # Web console mapped to host 8082
+      - "1522:1521"  # TCP server
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/
-    depends_on:
-      - Eureka
-    networks:
-      - micro-net
-    restart: unless-stopped
+      - H2_OPTIONS=-ifNotExists
+    volumes:
+      - h2-data:/opt/h2-data
 
-  Etudiant:
-    image: noura00/etudiant:latest
-    container_name: etudiant-appC
+  etudiant-app:
+    container_name: etudiant-service
+    build:
+      context: ./Etudiant
+      dockerfile: Dockerfile
     ports:
       - "8092:8092"
     environment:
+      - SPRING_APPLICATION_NAME=Etudiant
+      - SERVER_PORT=8092
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/
-    volumes:
-      - etudiant-data:/app/Database/Data
+      # Fixed database connection URL
+      - SPRING_DATASOURCE_URL=jdbc:h2:tcp://h2database:1521/Etudiant;DB_CLOSE_DELAY=-1
+      - SPRING_DATASOURCE_USERNAME=Nour
+      - SPRING_DATASOURCE_PASSWORD=
+      # Explicitly set the Hibernate dialect for H2
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.H2Dialect
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.H2Dialect
+      - SPRING_H2_CONSOLE_SETTINGS_WEB_ALLOW_OTHERS=true
     depends_on:
-      - Eureka
-    networks:
-      - micro-net
-    restart: unless-stopped
+      eureka:
+        condition: service_healthy
+      h2database:
+        condition: service_started
 
-networks:
-  micro-net:
-    driver: bridge
+  gateway:
+    container_name: api-gateway
+    build:
+      context: ./Gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8093:8093"
+    environment:
+      - SPRING_APPLICATION_NAME=Gateway
+      - SERVER_PORT=8093
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8761/eureka/
+    depends_on:
+      eureka:
+        condition: service_healthy
+      etudiant-app:
+        condition: service_started
 
 volumes:
-  etudiant-data:
+  h2-data:

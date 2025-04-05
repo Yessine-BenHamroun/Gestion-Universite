@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="521e6605-26c6-4e5c-abc9-214a617b4060" name="Changes" comment="" />
+    <list default="true" id="521e6605-26c6-4e5c-abc9-214a617b4060" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Etudiant" beforeDir="false" afterPath="$PROJECT_DIR$/Etudiant" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Etudiant/Database/Data/Etudiant.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/Etudiant/Database/Data/Etudiant.mv.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Etudiant/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Etudiant/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Etudiant/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Eureka" beforeDir="false" afterPath="$PROJECT_DIR$/Eureka" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Eureka/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Eureka/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Eureka/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gateway" beforeDir="false" afterPath="$PROJECT_DIR$/Gateway" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gateway/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gateway/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Gateway/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,9 +42,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Docker.Etudiant/Dockerfile.executor": "Run",
     "Docker.Gateway/Dockerfile.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Nour",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/abous/OneDrive/Bureau/MicroService",
     "node.js.detected.package.eslint": "true",
@@ -43,7 +57,15 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Docker.Etudiant/Dockerfile">
+    <configuration name="Etudiant/Dockerfile" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
+      <deployment type="dockerfile">
+        <settings>
+          <option name="sourceFilePath" value="Etudiant/Dockerfile" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <configuration name="Gateway/Dockerfile" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
       <deployment type="dockerfile">
         <settings>
@@ -60,6 +82,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker.Etudiant/Dockerfile" />
         <item itemvalue="Docker.Gateway/Dockerfile" />
       </list>
     </recent_temporary>
@@ -77,6 +100,8 @@
       <workItem from="1743721738137" duration="685000" />
       <workItem from="1743767507233" duration="1000" />
       <workItem from="1743785331795" duration="2251000" />
+      <workItem from="1743787881825" duration="5032000" />
+      <workItem from="1743878777459" duration="353000" />
     </task>
     <servers />
   </component>
