@@ -1,34 +1,36 @@
-package com.example.enseignant.models;
-
+package com.example.servicehamroun.entity;
 import jakarta.persistence.*;
-import lombok.*;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-public class Departement implements Serializable {
+@Table(name = "departement")
+public class Departement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_departement;
+    private Long id_departement;
+
     private String nom_departement;
-    @OneToOne(cascade = CascadeType.ALL)
+
+    @OneToOne
+    @JoinColumn(name = "chef_departement_id")
     private Enseignant chef_departement;
 
+    // Constructeurs
     public Departement() {
     }
 
-    public Departement(int id_departement, String nom_departement, Enseignant chef_departement) {
-        this.id_departement = id_departement;
+    public Departement(String nom_departement, Enseignant chef_departement) {
         this.nom_departement = nom_departement;
         this.chef_departement = chef_departement;
     }
 
-    public int getId_departement() {
+    // Getters et Setters
+    public Long getId_departement() {
         return id_departement;
     }
 
-    public void setId_departement(int id_departement) {
+    public void setId_departement(Long id_departement) {
         this.id_departement = id_departement;
     }
 
@@ -62,11 +64,13 @@ public class Departement implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Departement that = (Departement) o;
-        return id_departement == that.id_departement && Objects.equals(nom_departement, that.nom_departement) && Objects.equals(chef_departement, that.chef_departement);
+        return Objects.equals(id_departement, that.id_departement);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id_departement, nom_departement, chef_departement);
+        return Objects.hash(id_departement);
     }
+
+
 }
