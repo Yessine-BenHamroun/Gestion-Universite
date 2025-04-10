@@ -62,6 +62,7 @@ ServiceDou est un microservice Spring Boot pour la gestion des salles et des exa
 - Java 17
 - MySQL 8+
 - Maven 3.6+
+
 Accédez à la documentation interactive :
 🔗  http://localhost:8082/swagger-ui/index.html
 
