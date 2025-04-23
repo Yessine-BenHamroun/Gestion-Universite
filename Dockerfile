@@ -1,11 +1,6 @@
-# Utiliser une image de base avec Java 17
-FROM openjdk:17-jdk-alpine
 
-# Exposer le port sur lequel l'application Spring Boot écoute
+FROM openjdk:17
 EXPOSE 8082
+ADD target/ServiceDou-0.0.1-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
 
-# Copier le fichier JAR de l'application dans le conteneur
-ADD target/ServiceDoums.jar app.jar
-
-# Commande pour lancer l'application
-ENTRYPOINT ["java", "-jar", "/app.jar"]

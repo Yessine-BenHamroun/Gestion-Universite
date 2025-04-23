@@ -27,6 +27,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import com.example.servicedou.external.HolidayApiResponse;
 
+@CrossOrigin(origins = "http://localhost:4200",
+        allowedHeaders = "*",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+
+
 @RestController
 @RequestMapping("/salles")
 
