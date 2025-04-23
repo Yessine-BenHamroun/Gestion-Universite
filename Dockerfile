@@ -1,14 +1,5 @@
-# Use the official OpenJDK image to run the application
-FROM openjdk:11-jre-slim
-
-# Set the working directory
-WORKDIR /app
-
-# Copy the built JAR file into the container
-COPY target/gateway-service.jar /app/gateway-service.jar
-
-# Expose the port Gateway will run on
+FROM openjdk:17
 EXPOSE 8093
+ADD target/Gateway-0.0.1-SNAPSHOT.jar gateway.jar
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "/app/gateway-service.jar"]
+ENTRYPOINT ["java", "-jar", "gateway.jar"]
