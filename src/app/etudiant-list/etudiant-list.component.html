@@ -1,0 +1,267 @@
+<!-- etudiant-list.component.html -->
+<div class="container py-4">
+  <div class="row mb-4">
+    <div class="col-md-8">
+      <h1 class="fw-bold">Gestion des Étudiants</h1>
+    </div>
+    <div class="col-md-4 text-end">
+      <button 
+        (click)="toggleAddEtudiant()" 
+        class="btn btn-primary"
+      >
+        {{ showAddEtudiant ? 'Annuler' : 'Ajouter un étudiant' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Add Etudiant Form -->
+  <div *ngIf="showAddEtudiant" class="mb-4 card">
+    <div class="card-body">
+      <h2 class="card-title mb-3">Ajouter un nouvel étudiant</h2>
+      <form [formGroup]="etudiantForm" (ngSubmit)="onSubmitEtudiant()">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Nom</label>
+            <input type="text" formControlName="nom" class="form-control" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Prénom</label>
+            <input type="text" formControlName="prenom" class="form-control" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Email</label>
+            <input type="email" formControlName="email" class="form-control" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Date de naissance</label>
+            <input type="date" formControlName="date_naissance" class="form-control" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Adresse</label>
+            <input type="text" formControlName="adresse" class="form-control" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Téléphone</label>
+            <input type="text" formControlName="telephone" class="form-control" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Niveau</label>
+            <select formControlName="niveau" class="form-select">
+              <option value="">Sélectionner un niveau</option>
+              <option value="L1">Licence 1</option>
+              <option value="L2">Licence 2</option>
+              <option value="L3">Licence 3</option>
+              <option value="M1">Master 1</option>
+              <option value="M2">Master 2</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Département</label>
+            <input type="number" formControlName="id_departement" class="form-control" />
+          </div>
+          <div class="col-12">
+            <button 
+              type="submit" 
+              [disabled]="!etudiantForm.valid" 
+              class="btn btn-success"
+            >
+              Enregistrer
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main layout: Student list and details side by side -->
+  <div class="row">
+    <!-- Students list -->
+    <div class="col-lg-4 mb-4">
+      <div class="card">
+        <div class="card-header bg-light">
+          <h2 class="card-title mb-0">Liste des Étudiants</h2>
+        </div>
+        <div class="list-group list-group-flush" style="max-height: 600px; overflow-y: auto;">
+          <div 
+            *ngFor="let etudiant of etudiants" 
+            class="list-group-item list-group-item-action"
+            [class.active]="selectedEtudiant?.id_etudiant === etudiant.id_etudiant"
+            (click)="onSelectEtudiant(etudiant)"
+          >
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h5 class="mb-1">{{ etudiant.nom }} {{ etudiant.prenom }}</h5>
+                <small>{{ etudiant.email }}</small>
+                <div><small>Niveau: {{ etudiant.niveau }}</small></div>
+              </div>
+              <div class="btn-group btn-group-sm">
+                <button 
+                  (click)="toggleAffectNote(etudiant); $event.stopPropagation()" 
+                  class="btn btn-outline-primary"
+                >
+                  Note
+                </button>
+                <button 
+                  (click)="toggleAffectInscription(etudiant); $event.stopPropagation()" 
+                  class="btn btn-outline-success"
+                >
+                  Inscription
+                </button>
+                <button 
+                  (click)="deleteEtudiant(etudiant.id_etudiant!); $event.stopPropagation()" 
+                  class="btn btn-outline-danger"
+                >
+                  Supprimer
+                </button>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="etudiants.length === 0" class="list-group-item text-center text-muted">
+            Aucun étudiant trouvé
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Details panel -->
+    <div class="col-lg-8">
+      <!-- Affect Note Form -->
+      <div *ngIf="showAffectNote && selectedEtudiant" class="card mb-4">
+        <div class="card-body">
+          <h2 class="card-title mb-3">Affecter une note à {{ selectedEtudiant.nom }} {{ selectedEtudiant.prenom }}</h2>
+          <form [formGroup]="noteForm" (ngSubmit)="onSubmitNote()">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">ID Examen</label>
+                <input type="number" formControlName="id_examen" class="form-control" />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">Valeur (0-20)</label>
+                <input type="number" formControlName="valeur" min="0" max="20" step="0.1" class="form-control" />
+              </div>
+              <div class="col-12">
+                <button 
+                  type="submit" 
+                  [disabled]="!noteForm.valid" 
+                  class="btn btn-success me-2"
+                >
+                  Enregistrer
+                </button>
+                <button 
+                  type="button"
+                  (click)="showAffectNote = false" 
+                  class="btn btn-secondary"
+                >
+                  Annuler
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Affect Inscription Form -->
+      <div *ngIf="showAffectInscription && selectedEtudiant" class="card mb-4">
+        <div class="card-body">
+          <h2 class="card-title mb-3">Affecter une inscription à {{ selectedEtudiant.nom }} {{ selectedEtudiant.prenom }}</h2>
+          <form [formGroup]="inscriptionForm" (ngSubmit)="onSubmitInscription()">
+            <div class="mb-3">
+              <label class="form-label fw-bold">Inscription</label>
+              <select formControlName="id_inscription" class="form-select">
+                <option value="">Sélectionner une inscription</option>
+                <option *ngFor="let inscription of getAvailableInscriptions()" [value]="inscription.id_inscription">
+                  Inscription #{{ inscription.id_inscription }} - Cours: {{ inscription.id_cours }} - {{ inscription.annee_academique }}
+                </option>
+              </select>
+            </div>
+            <div>
+              <button 
+                type="submit" 
+                [disabled]="!inscriptionForm.valid" 
+                class="btn btn-success me-2"
+              >
+                Enregistrer
+              </button>
+              <button 
+                type="button"
+                (click)="showAffectInscription = false" 
+                class="btn btn-secondary"
+              >
+                Annuler
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Student Details and Inscriptions -->
+      <div *ngIf="selectedEtudiant && showInscriptions" class="card">
+        <div class="card-header bg-light">
+          <h2 class="card-title mb-0">Détails de l'étudiant</h2>
+        </div>
+        <div class="card-body">
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <p><span class="fw-bold">Nom:</span> {{ selectedEtudiant.nom }}</p>
+              <p><span class="fw-bold">Prénom:</span> {{ selectedEtudiant.prenom }}</p>
+              <p><span class="fw-bold">Email:</span> {{ selectedEtudiant.email }}</p>
+              <p><span class="fw-bold">Téléphone:</span> {{ selectedEtudiant.telephone }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><span class="fw-bold">Date de naissance:</span> {{ selectedEtudiant.date_naissance | date }}</p>
+              <p><span class="fw-bold">Adresse:</span> {{ selectedEtudiant.adresse }}</p>
+              <p><span class="fw-bold">Niveau:</span> {{ selectedEtudiant.niveau }}</p>
+              <p><span class="fw-bold">Département:</span> {{ selectedEtudiant.id_departement }}</p>
+            </div>
+          </div>
+
+          <!-- Inscriptions list -->
+          <div class="mt-4">
+            <h3 class="mb-3">Inscriptions</h3>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead class="bg-light">
+                  <tr>
+                    <th>ID</th>
+                    <th>Cours ID</th>
+                    <th>Année Académique</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let inscription of selectedEtudiant.inscriptions">
+                    <td>{{ inscription.id_inscription }}</td>
+                    <td>{{ inscription.id_cours }}</td>
+                    <td>{{ inscription.annee_academique }}</td>
+                    <td>
+                      <button 
+                        (click)="desaffecterInscription(inscription.id_inscription!)" 
+                        class="btn btn-sm btn-danger"
+                      >
+                        Désaffecter
+                      </button>
+                    </td>
+                  </tr>
+                  <tr *ngIf="!selectedEtudiant.inscriptions || selectedEtudiant.inscriptions.length === 0">
+                    <td colspan="4" class="text-center text-muted py-3">
+                      Aucune inscription trouvée pour cet étudiant
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty state when no student selected -->
+      <div *ngIf="!selectedEtudiant" class="card text-center">
+        <div class="card-body py-5">
+          <i class="bi bi-people-fill text-muted" style="font-size: 3rem;"></i>
+          <h3 class="mt-3">Aucun étudiant sélectionné</h3>
+          <p class="text-muted">Cliquez sur un étudiant dans la liste pour voir ses détails et inscriptions</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
