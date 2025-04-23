@@ -1,14 +1,5 @@
-# Use the official OpenJDK image to run the application
-FROM openjdk:11-jre-slim
-
-# Set the working directory
-WORKDIR /app
-
-# Copy the built JAR file into the container
-COPY target/eureka-service.jar /app/eureka-service.jar
-
-# Expose the port Eureka will run on
+FROM openjdk:17
 EXPOSE 8761
+ADD target/Eureka-0.0.1-SNAPSHOT.jar eureka.jar
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "/app/eureka-service.jar"]
+ENTRYPOINT ["java", "-jar", "eureka.jar"]
