@@ -10,5 +10,6 @@ public interface INService {
     List<Note> getAllNotes ();
     void deleteNote (int id);
     Note updateNote (Note note);
+    Note affectNoteToEtudiant(Integer etudiantId, Integer examId, Float valeur);
 
 }

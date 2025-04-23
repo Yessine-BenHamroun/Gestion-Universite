@@ -1,9 +1,11 @@
 package com.esprit.microservice.etudiant.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "ETUDIANT")  // Ensure it matches your H2 table name exactly
@@ -22,6 +24,11 @@ public class Etudiant implements Serializable {
     private String telephone;
     private String niveau;
     private Integer id_departement;
+
+    // One-to-many relationship with Inscription
+    @JsonIgnore
+    @OneToMany(mappedBy = "etudiant", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Inscription> inscriptions;
 
     public Etudiant(Integer id_etudiant, String nom, String prenom, String email, Date date_naissance, String adresse, String telephone, String niveau, Integer id_departement) {
         this.id_etudiant = id_etudiant;
@@ -114,6 +121,13 @@ public class Etudiant implements Serializable {
     public void setId_departement(Integer id_departement) {
         this.id_departement = id_departement;
     }
+    public List<Inscription> getInscriptions() {
+        return inscriptions;
+    }
+
+    public void setInscriptions(List<Inscription> inscriptions) {
+        this.inscriptions = inscriptions;
+    }
 
     @Override
     public String toString() {
@@ -127,6 +141,8 @@ public class Etudiant implements Serializable {
                 ", telephone='" + telephone + '\'' +
                 ", niveau='" + niveau + '\'' +
                 ", id_departement=" + id_departement +
+                ", inscriptions=" + inscriptions +
+
                 '}';
     }
 }

@@ -11,6 +11,7 @@ public interface Iservice {
     void deleteEtudiant(int id);
     Etudiant updateEtudiant(Etudiant etudiant);
     List<Etudiant> getAllEtudiants();
-
+    Inscription assignInscriptionToEtudiant(Integer inscriptionId, Integer etudiantId);
+    public Inscription desaffecterInscription(Integer etudiantId, Integer inscriptionId) ;
 
 }

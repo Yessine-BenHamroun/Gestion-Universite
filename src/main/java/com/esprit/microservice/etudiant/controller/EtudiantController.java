@@ -1,13 +1,14 @@
 package com.esprit.microservice.etudiant.controller;
 
 import com.esprit.microservice.etudiant.models.Etudiant;
+import com.esprit.microservice.etudiant.models.Inscription;
 import com.esprit.microservice.etudiant.service.Iservice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/etudiants")
 
@@ -31,9 +32,8 @@ public class EtudiantController {
 
     // Get all students
     @GetMapping("/getAll")
-    public ResponseEntity<List<Etudiant>> getAllEtudiants() {
-        List<Etudiant> etudiants = etudiantService.getAllEtudiants();
-        return ResponseEntity.ok(etudiants);
+    public List<Etudiant> getAllEtudiants() {
+        return etudiantService.getAllEtudiants();
     }
 
     // Update a student
@@ -50,4 +50,31 @@ public class EtudiantController {
         etudiantService.deleteEtudiant(id);
         return ResponseEntity.noContent().build();
     }
+    @PutMapping("/{etudiantId}/inscriptions/{inscriptionId}/assign")
+    public ResponseEntity<Inscription> assignInscriptionToEtudiant(
+            @PathVariable Integer etudiantId,
+            @PathVariable Integer inscriptionId) {
+
+        Inscription updatedInscription = etudiantService.assignInscriptionToEtudiant(etudiantId, inscriptionId);
+
+        return ResponseEntity.ok(updatedInscription);
+    }
+    @PutMapping("/desaffect-inscription/{idInscription}/from-etudiant/{idEtudiant}")
+    public ResponseEntity<Inscription> desaffecterInscriptionFromEtudiant(
+            @PathVariable("idEtudiant") Integer idEtudiant,
+            @PathVariable("idInscription") Integer idInscription) {
+
+        System.out.println(">>> Desaffecting inscription " + idInscription + " from etudiant " + idEtudiant);
+
+        Inscription updatedInscription = etudiantService.desaffecterInscription(idEtudiant, idInscription);
+
+        if (updatedInscription != null) {
+            return ResponseEntity.ok(updatedInscription);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
 }
