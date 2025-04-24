@@ -1,0 +1,15 @@
+/* Style pour les boutons de navigation */
+.btn-outline-primary {
+    min-width: 120px;
+  }
+  
+  /* Style pour le tableau */
+  .table-responsive {
+    margin-top: 20px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Style pour les lignes du tableau */
+  .table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+  }

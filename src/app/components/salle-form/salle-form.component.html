@@ -1,0 +1,44 @@
+<div class="container mt-4">
+    <h2>{{ isEditMode ? 'Modifier' : 'Ajouter' }} une Salle</h2>
+    
+    <form [formGroup]="salleForm" (ngSubmit)="onSubmit()" class="mt-4">
+      <div class="mb-3">
+        <label for="nomSalle" class="form-label">Nom de la salle</label>
+        <input type="text" class="form-control" id="nomSalle" formControlName="nomSalle">
+        <div *ngIf="salleForm.get('nomSalle')?.invalid && salleForm.get('nomSalle')?.touched" 
+             class="text-danger">
+          Le nom est obligatoire (max 50 caractères)
+        </div>
+      </div>
+  
+      <div class="mb-3">
+        <label for="capacite" class="form-label">Capacité</label>
+        <input type="number" class="form-control" id="capacite" formControlName="capacite">
+        <div *ngIf="salleForm.get('capacite')?.invalid && salleForm.get('capacite')?.touched" 
+             class="text-danger">
+          La capacité doit être un nombre positif
+        </div>
+      </div>
+  
+      <div class="mb-3">
+        <label for="typeSalle" class="form-label">Type de salle</label>
+        <select class="form-select" id="typeSalle" formControlName="typeSalle">
+          <option value="" disabled selected>Sélectionnez un type</option>
+          <option *ngFor="let type of typeSalleOptions" [value]="type">{{ type }}</option>
+        </select>
+        <div *ngIf="salleForm.get('typeSalle')?.invalid && salleForm.get('typeSalle')?.touched" 
+             class="text-danger">
+          Le type est obligatoire
+        </div>
+      </div>
+  
+      <div class="mt-4">
+        <button type="button" class="btn btn-secondary me-2" routerLink="/salles">
+          <i class="fas fa-arrow-left"></i> Annuler
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="salleForm.invalid">
+          <i class="fas fa-save"></i> {{ isEditMode ? 'Mettre à jour' : 'Créer' }}
+        </button>
+      </div>
+    </form>
+  </div>

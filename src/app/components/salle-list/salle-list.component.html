@@ -1,0 +1,45 @@
+<div class="container mt-4">
+    <h2 class="mb-4">Liste des Salles</h2>
+    
+    <!-- Loader -->
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+    </div>
+  
+    <!-- Message d'erreur -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Message si pas de salles -->
+    <div *ngIf="!isLoading && !errorMessage && salles.length === 0" class="alert alert-info">
+      Aucune salle disponible.
+    </div>
+  
+    <!-- Liste des salles -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div *ngFor="let salle of salles" class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ salle.nomSalle }}</h5>
+            <p class="card-text">
+              <strong>Type:</strong> {{ salle.typeSalle }}<br>
+              <strong>Capacité:</strong> {{ salle.capacite }} places<br>
+              <strong>Examens:</strong> {{ salle.examenList?.length || 0 }}
+            </p><div class="d-flex justify-content-end">
+                <button class="btn btn-sm btn-outline-primary me-2" (click)="editSalle(salle.id!)">
+                  <i class="fas fa-edit"></i> Modifier
+                </button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteSalle(salle.id!)">
+                  <i class="fas fa-trash"></i> Supprimer
+                </button>
+              
+            
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

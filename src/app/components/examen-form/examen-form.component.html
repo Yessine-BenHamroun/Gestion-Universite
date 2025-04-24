@@ -1,0 +1,52 @@
+<div class="container mt-4">
+    <h2>{{ isEditMode ? 'Modifier' : 'Créer' }} un Examen</h2>
+    
+    <form [formGroup]="examenForm" (ngSubmit)="onSubmit()" class="mt-4">
+      <div class="row g-3">
+        <!-- Date -->
+        <div class="col-md-6">
+          <label for="dateExamen" class="form-label">Date</label>
+          <input type="datetime-local" class="form-control" id="dateExamen" formControlName="dateExamen">
+        </div>
+  
+        <!-- Type -->
+        <div class="col-md-6">
+          <label for="typeExamen" class="form-label">Type</label>
+          <select class="form-select" id="typeExamen" formControlName="typeExamen">
+            <option value="" disabled selected>Sélectionnez un type</option>
+            <option *ngFor="let type of typeExamenOptions" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+  
+        <!-- Coefficient -->
+        <div class="col-md-4">
+          <label for="coefficient" class="form-label">Coefficient</label>
+          <input type="number" step="0.1" class="form-control" id="coefficient" formControlName="coefficient">
+        </div>
+  
+        <!-- Nombre d'étudiants -->
+        <div class="col-md-4">
+          <label for="nbEtudiants" class="form-label">Nombre d'étudiants</label>
+          <input type="number" class="form-control" id="nbEtudiants" formControlName="nbEtudiants">
+        </div>
+  
+        <!-- Salle -->
+        <div class="col-md-4">
+          <label for="salleId" class="form-label">Salle</label>
+          <select class="form-select" id="salleId" formControlName="salleId">
+            <option [value]="null">Non affecté</option>
+            <option *ngFor="let salle of salles" [value]="salle.id">{{ salle.nomSalle }} ({{ salle.capacite }} places)</option>
+          </select>
+        </div>
+      </div>
+  
+      <div class="mt-4">
+        <button type="button" class="btn btn-secondary me-2" routerLink="/examens">
+          <i class="fas fa-arrow-left"></i> Annuler
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="examenForm.invalid">
+          <i class="fas fa-save"></i> {{ isEditMode ? 'Mettre à jour' : 'Créer' }}
+        </button>
+      </div>
+    </form>
+  </div>

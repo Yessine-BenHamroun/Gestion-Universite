@@ -1,0 +1,54 @@
+<div class="container mt-4">
+    <h2 class="mb-4">Planning des Examens</h2>
+  
+    <!-- Date controls -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <button class="btn btn-outline-primary" (click)="changeDate(-1)">
+        <i class="fas fa-chevron-left"></i> Précédent
+      </button>
+      
+      <h4 class="mb-0">
+        {{ selectedDate | date:'fullDate':'':'fr' }}
+      </h4>
+      
+      <button class="btn btn-outline-primary" (click)="changeDate(1)">
+        Suivant <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  
+    <!-- Loader -->
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+    </div>
+  
+    <!-- Planning table -->
+    <div *ngIf="!isLoading" class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Heure</th>
+            <th>Examen</th>
+            <th>Type</th>
+            <th>Salle</th>
+            <th>Étudiants</th>
+            <th>Coefficient</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let examen of getExamensForDate(selectedDate)">
+            <td>{{ formatExamTime(examen.dateExamen) }}</td>
+            <td>{{ examen.nomExamen || examen.typeExamen || 'N/A' }}</td>
+            <td>{{ examen.typeExamen }}</td>
+            <td>{{ examen.salle?.nomSalle || 'Non affecté' }}</td>
+            <td>{{ examen.nbEtudiants }}</td>
+            <td>{{ examen.coefficient }}</td>
+          </tr>
+          <tr *ngIf="getExamensForDate(selectedDate).length === 0">
+            <td colspan="6" class="text-center">Aucun examen prévu cette journée</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
